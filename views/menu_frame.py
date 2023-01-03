@@ -2,6 +2,7 @@ import customtkinter as ctk
 
 from views.image_frame import ImageFrame
 from views.thermocycle_frame import ThermocycleFrame
+from views.build_protocol_frame import BuildProtocolFrame
 
 # Constants
 X = 10
@@ -69,22 +70,10 @@ class MenuFrame(ctk.CTkFrame):
 			print(button_title)
 		elif button_title == 'Image':
 			frame = ImageFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
-			if self.current_view == None:
-				self.current_view = frame
-				self.current_view.create_ui()
-			elif self.current_view != frame:
-				self.destroy_current_view()
-				self.current_view = frame
-				self.current_view.create_ui()
 		elif button_title == 'Thermocycle':
 			frame = ThermocycleFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
-			if self.current_view == None:
-				self.current_view = frame
-				self.current_view.create_ui()
-			elif self.current_view != frame:
-				self.destroy_current_view()
-				self.current_view = frame
-				self.current_view.create_ui()
+		elif button_title == "Build Protocol":
+			frame = BuildProtocolFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
 		elif button_title == 'Optimize':
 			print(button_title)
 		elif button_title == 'Service':
@@ -93,6 +82,14 @@ class MenuFrame(ctk.CTkFrame):
 			print(button_title)
 		elif button_title == 'Configure':
 			print(button_title)
+		# Check if the button was clicked for the same view
+		if self.current_view == None:
+			self.current_view = frame
+			self.current_view.create_ui()
+		elif self.current_view != frame:
+			self.destroy_current_view()
+			self.current_view = frame
+			self.current_view.create_ui()
 
 	def destroy_current_view(self) -> None:
 		# Clean up the Right Frame for updating
