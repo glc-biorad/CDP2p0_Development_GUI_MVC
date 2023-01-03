@@ -2,8 +2,10 @@ from typing import Any, Callable
 from tkinter import StringVar
 from PIL import Image
 import customtkinter as ctk
+import tkinter as tk
 
 # Import the BuildProtocolModel
+from models.build_protocol_model import BuildProtocolModel
 
 # Constants
 IMAGE_CHECK_WIDTH = 20
@@ -26,6 +28,11 @@ LABEL_TIPS_ACTION_POSY = 10
 OPTIONMENU_TIPS_ACTION_POSX = 405
 OPTIONMENU_TIPS_ACTION_POSY = 40
 OPTIONMENU_TIPS_ACTION_WIDTH = 100
+LABEL_TIPS_ADD_POSX = 517
+LABEL_TIPS_ADD_POSY = 10
+BUTTON_TIPS_ADD_POSX = 510
+BUTTON_TIPS_ADD_POSY = 40
+BUTTON_TIPS_ADD_WIDTH = 40
 LABEL_MOTION_POSX = 5 
 LABEL_MOTION_POSY = 100
 LABEL_MOTION_CONSUMABLE_POSX = 163
@@ -83,11 +90,11 @@ BUTTON_PIPETTOR_ADD_WIDTH = 40
 BUTTON_PIPETTOR_ADD_HEIGHT = 25
 LABEL_TIME_POSX = 5
 LABEL_TIME_POSY = 220
-LABEL_TIME_DELAY_POSX = 100
+LABEL_TIME_DELAY_POSX = 102
 LABEL_TIME_DELAY_POSY = 190
-ENTRY_TIME_DELAY_POSX = 80
+ENTRY_TIME_DELAY_POSX = 85
 ENTRY_TIME_DELAY_POSY = 220
-ENTRY_TIME_DELAY_WIDTH = 80
+ENTRY_TIME_DELAY_WIDTH = 75
 LABEL_TIME_UNITS_POSX = 215
 LABEL_TIME_UNITS_POSY = 190
 OPTIONMENU_TIME_UNITS_POSX = 165
@@ -110,6 +117,14 @@ LABEL_OTHER_ADD_POSY = 250
 BUTTON_OTHER_ADD_POSX = 290
 BUTTON_OTHER_ADD_POSY = 280
 BUTTON_OTHER_ADD_WIDTH = 40
+TREEVIEW_POSX = 5
+TREEVIEW_POSY = 320
+TREEVIEW_COLUMN_WIDTH = 440
+TREEVIEW_WIDTH = 440
+TREEVIEW_HEIGHT = 160
+SCROLLBAR_POSX = 5
+SCROLLBAR_POSY = 480
+SCROLLBAR_WIDTH = 440
 
 # Constants Deck Plate 
 NO_TRAY_CONSUMABLES = ["Pre-Amp Thermocycler", "Assay Strip", "Heater/Shaker", "Mag Separator", "Chiller"]
@@ -117,6 +132,37 @@ NO_COLUMN_CONSUMABLES = ["Aux Heater", "Sample Rack", "Quant Strip"]
 TWELVE_COLUMN_CONSUMABLES = ["Pre-Amp Thermocycler", "Mag Separator", "Chiller", "Reagent Cartridge"]
 EIGHT_COLUMN_CONSUMABLES = ["Tip Transfer Tray", "Assay Strip", "Tip Tray"]
 FOUR_COLUMN_CONSUMABLES = ["Heater/Shaker"]
+
+# Constant Other Option Values
+OTHER_OPTION_VALUES = [
+	"Home pipettor",
+	"Move relative left",
+	"Move relative right",
+	"Move relative up",
+	"Move relative down",
+	"Move relative forwards",
+	"Move relative backwards",
+	"Generate standard droplets",
+	"Generate pico droplets",
+	"Extraction",
+	"Transfer plasma",
+	"Binding",
+	"Pooling",
+	"Wash 1",
+	"Wash 2",
+	"Pre-Eultion",
+	"Elution",
+	"Enrichment",
+	"Pre-Amp",
+	"Assay Prep",
+	"Shake on",
+	"Shake off",
+	"Engage magnet",
+	"Disengage magnet",
+	"Pre-Amp Thermocycle",
+	"Move lid",
+	"Move chip",
+]
 
 # Image Paths
 IMAGE_PATHS = {
@@ -143,6 +189,7 @@ class BuildProtocolFrame(ctk.CTkFrame):
 		posy : int
 			The y position relative to the root origin
 		"""
+		self.model = BuildProtocolModel()
 		self.master = master
 		self.width = width
 		self.height = height
@@ -175,8 +222,9 @@ class BuildProtocolFrame(ctk.CTkFrame):
 		self.create_time_ui()
 		# Place the Other Section
 		self.create_other_ui()
-		# Place the Protocol Progress Bar
 		# Place the Protocol Action Treeview
+		self.create_treeview_ui()
+		# Place the Protocol Progress Bar
 		# Place the Start Button
 		# Place the Load Button
 		# Place the Save Button
@@ -230,6 +278,17 @@ class BuildProtocolFrame(ctk.CTkFrame):
 		)
 		self.optionmenu_tips_action.place(x=OPTIONMENU_TIPS_ACTION_POSX, y=OPTIONMENU_TIPS_ACTION_POSY)
 		# Place the add label and button
+		self.label_tips_add = ctk.CTkLabel(master=self, text='Add', font=("Roboto Medium", -14))
+		self.label_tips_add.place(x=LABEL_TIPS_ADD_POSX, y=LABEL_TIPS_ADD_POSY)
+		self.button_tips_add = ctk.CTkButton(
+			master=self,
+			text='',
+			image=self.photoimage_check,
+			fg_color=BUTTON_ADD_COLOR,
+			width=BUTTON_TIPS_ADD_WIDTH,
+			command=self.on_click_tips_add
+		)
+		self.button_tips_add.place(x=BUTTON_TIPS_ADD_POSX, y=BUTTON_TIPS_ADD_POSY)
 
 	def create_motion_ui(self) -> None:
 		"""Deals with creating the UI for the Motion section of the Build Protocol Frame
@@ -429,8 +488,50 @@ class BuildProtocolFrame(ctk.CTkFrame):
 		self.label_other = ctk.CTkLabel(master=self, text='Other', font=("Roboto Medium", -16))
 		self.label_other.place(x=LABEL_OTHER_POSX, y=LABEL_OTHER_POSY)
 		# Place the option label and optionmenu
-		
+		self.label_other_option = ctk.CTkLabel(master=self, text='Option', font=("Roboto Medium", -14))
+		self.label_other_option.place(x=LABEL_OTHER_OPTION_POSX, y=LABEL_OTHER_OPTION_POSY)
+		self.other_option_sv = StringVar()
+		self.other_option_sv.set("Home Pipettor")
+		self.optionmenu_other_option = ctk.CTkOptionMenu(
+			master=self,
+			variable=self.other_option_sv,
+			values=OTHER_OPTION_VALUES,
+			width=OPTIONMENU_OTHER_OPTION_WIDTH
+		)
+		self.optionmenu_other_option.place(x=OPTIONMENU_OTHER_OPTION_POSX, y=OPTIONMENU_OTHER_OPTION_POSY)
 		# Place the add label and button
+		self.label_other_add = ctk.CTkLabel(master=self, text='Add', font=("Roboto Medium", -14))
+		self.label_other_add.place(x=LABEL_OTHER_ADD_POSX, y=LABEL_OTHER_ADD_POSY)
+		self.button_other_add = ctk.CTkButton(
+			master=self,
+			text='',
+			image=self.photoimage_check,
+			fg_color=BUTTON_ADD_COLOR,
+			width=BUTTON_OTHER_ADD_WIDTH,
+			command=self.on_click_other_add
+		)
+		self.button_other_add.place(x=BUTTON_OTHER_ADD_POSX, y=BUTTON_OTHER_ADD_POSY)
+
+	def create_treeview_ui(self) -> None:
+		"""Create the UI for the actions treeview
+		"""
+		# Create the scrollbar
+		self.scrollbar = tk.Scrollbar(self, orient='horizontal')
+		# Create the treeview and link with the scrollbar
+		self.treeview = tk.ttk.Treeview(
+			self,
+			columns=('Action'),
+			show='headings',
+			xscrollcommand=self.scrollbar.set
+		)	
+		self.scrollbar.config(command=self.treeview.xview)
+		# Setup the treeview
+		self.treeview.column('Action', width=TREEVIEW_COLUMN_WIDTH, stretch=False)
+		self.treeview.heading('Action', text='Action')
+		# Place the treeview and scrollbar
+		self.treeview.place(x=TREEVIEW_POSX, y=TREEVIEW_POSY, width=TREEVIEW_WIDTH, height=TREEVIEW_HEIGHT)
+		self.scrollbar.place(x=SCROLLBAR_POSX, y=SCROLLBAR_POSY, width=SCROLLBAR_WIDTH)
+		# Add copy and paste functionality to the treeview
 
 	def callback_tips_tray(self, *args) -> None:
 		"""Deals with what happens if the Tips Tray changes
@@ -532,6 +633,34 @@ class BuildProtocolFrame(ctk.CTkFrame):
 		column = self.motion_column_sv.get()
 		tip = self.motion_tip_sv.get()
 
+	def on_click_tips_add(self) -> None:
+		"""On click event for adding a tips action
+		"""
+		# Get the action data
+		tray = self.tips_tray_sv.get()
+		column = self.tips_column_sv.get()
+		action = self.tips_action_sv.get()
+		# Make sure there is an action
+		if action == '':
+			print(f"Tip action must be specified")
+			return None
+		# Check the action treeview to make sure you are allowed to add this action
+		# Generate the action message
+		action_message = ''
+		if tray == '':
+			action_message = f"{action} tips"
+		else:
+			if action == 'Eject':
+				action_message = f"{action} tips in {tray} column {column}"
+			elif action == 'Pickup':
+				action_message = f"{action} tips from {tray} column {column}"
+			else:
+				action_message = f"{action} tips on the {tray}"
+		print(action_message)
+		print("NEED TO GET THE CONTOLLER TO UPDATE THE MODEL!!!")
+		# Add the action to the action treeview
+		self.update_treeview()
+
 	def on_click_motion_add(self) -> None:
 		"""On click event for adding a motion action
 		"""
@@ -604,3 +733,28 @@ class BuildProtocolFrame(ctk.CTkFrame):
 		action_message = f"Delay for {time_} {units}"
 		print(action_message)
 		# Add the action to the action treeview
+
+	def on_click_other_add(self) -> None:
+		"""On click event for adding an other action
+		"""
+		# Get the action data
+		other = self.other_option_sv.get()
+		# Generate the action message
+		action_message = other
+		print(action_message)
+		# Add the action to the action treeview
+
+	def update_treeview(self) -> None:
+		"""Update the treeview based on the build protocol model
+		"""
+		# Cleanout the treeview
+		#self.treeview(*self.treeview.get_children())
+		for i in self.treeview.get_children():
+			self.treeview.delete(i)
+		# Add the actions back to the treeview
+		n_actions = len(self.model.actions)	
+		for i in range(n_actions):
+			action = self.model.actions[i]
+			print(action)
+			self.treeview.insert('', 'end', iid=i, values=(action,))
+		self.model.actions

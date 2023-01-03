@@ -9,6 +9,8 @@ from models.model import Model
 
 from views.menu_frame import MenuFrame
 
+from views.build_protocol_frame import BuildProtocolFrame
+
 # Constants
 TITLE = "CDP 2.0 Development GUI"
 WIDTH = 780
@@ -36,7 +38,4 @@ class View(ctk.CTk):
 	def create_ui(self) -> None:
 		# Create the MenuFrame
 		self.menu_frame.create_ui()
-
-		# Create the right frame
-		#self.frame_right = ctk.CTkFrame(master=self)
-		#self.frame_right.grid(row=0, column=1, sticky='nswe', padx=20, pady=10, columnspan=3) 
+	

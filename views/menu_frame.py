@@ -36,6 +36,9 @@ class MenuFrame(ctk.CTkFrame):
 		self.right_frame_width = right_frame_width
 		self.right_frame_height = right_frame_height
 		self.current_view: ctk.CTkFrame = None
+		self.image_frame = ImageFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
+		self.thermocycle_frame = ThermocycleFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
+		self.build_protocol_frame = BuildProtocolFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
 		super().__init__(
 			master=self.master, 
 			width = self.width,
@@ -69,11 +72,11 @@ class MenuFrame(ctk.CTkFrame):
 		if button_title == 'Home':
 			print(button_title)
 		elif button_title == 'Image':
-			frame = ImageFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
+			frame = self.image_frame
 		elif button_title == 'Thermocycle':
-			frame = ThermocycleFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
+			frame = self.thermocycle_frame
 		elif button_title == "Build Protocol":
-			frame = BuildProtocolFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
+			frame = self.build_protocol_frame
 		elif button_title == 'Optimize':
 			print(button_title)
 		elif button_title == 'Service':
