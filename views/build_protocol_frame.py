@@ -1,10 +1,14 @@
 from typing import Any, Callable
 from tkinter import StringVar
+from PIL import Image
 import customtkinter as ctk
 
 # Import the BuildProtocolModel
 
 # Constants
+IMAGE_CHECK_WIDTH = 20
+IMAGE_CHECK_HEIGHT = 20
+BUTTON_ADD_COLOR = '#10adfe'
 LABEL_TIPS_POSX = 5
 LABEL_TIPS_POSY = 40
 LABEL_TIPS_TRAY_POSX = 190
@@ -44,6 +48,80 @@ LABEL_MOTION_TIP_POSY = 70
 OPTIONMENU_MOTION_TIP_POSX = 435 
 OPTIONMENU_MOTION_TIP_POSY = 100
 OPTIONMENU_MOTION_TIP_WIDTH = 70
+LABEL_MOTION_ADD_POSX = 517
+LABEL_MOTION_ADD_POSY = 70
+BUTTON_MOTION_ADD_POSX = 510
+BUTTON_MOTION_ADD_POSY = 100
+BUTTON_MOTION_ADD_WIDTH = 40
+LABEL_PIPETTOR_POSX = 5
+LABEL_PIPETTOR_POSY = 160
+LABEL_PIPETTOR_VOLUME_POSX = 92
+LABEL_PIPETTOR_VOLUME_POSY = 130
+ENTRY_PIPETTOR_VOLUME_POSX = 85
+ENTRY_PIPETTOR_VOLUME_POSY = 160
+ENTRY_PIPETTOR_VOLUME_WIDTH = 95
+LABEL_PIPETTOR_TIP_POSX = 200
+LABEL_PIPETTOR_TIP_POSY = 130
+OPTIONMENU_PIPETTOR_TIP_POSX = 185
+OPTIONMENU_PIPETTOR_TIP_POSY = 160
+OPTIONMENU_PIPETTOR_TIP_WIDTH = 70
+LABEL_PIPETTOR_ACTION_POSX = 295
+LABEL_PIPETTOR_ACTION_POSY = 130
+OPTIONMENU_PIPETTOR_ACTION_POSX = 260
+OPTIONMENU_PIPETTOR_ACTION_POSY = 160
+OPTIONMENU_PIPETTOR_ACTION_WIDTH = 120
+LABEL_PIPETTOR_PRESSURE_POSX = 420
+LABEL_PIPETTOR_PRESSURE_POSY = 130
+OPTIONMENU_PIPETTOR_PRESSURE_POSX = 385
+OPTIONMENU_PIPETTOR_PRESSURE_POSY = 160
+OPTIONMENU_PIPETTOR_PRESSURE_WIDTH = 120
+LABEL_PIPETTOR_ADD_POSX = 517
+LABEL_PIPETTOR_ADD_POSY = 130
+BUTTON_PIPETTOR_ADD_POSX = 510
+BUTTON_PIPETTOR_ADD_POSY = 160
+BUTTON_PIPETTOR_ADD_WIDTH = 40
+BUTTON_PIPETTOR_ADD_HEIGHT = 25
+LABEL_TIME_POSX = 5
+LABEL_TIME_POSY = 220
+LABEL_TIME_DELAY_POSX = 100
+LABEL_TIME_DELAY_POSY = 190
+ENTRY_TIME_DELAY_POSX = 80
+ENTRY_TIME_DELAY_POSY = 220
+ENTRY_TIME_DELAY_WIDTH = 80
+LABEL_TIME_UNITS_POSX = 215
+LABEL_TIME_UNITS_POSY = 190
+OPTIONMENU_TIME_UNITS_POSX = 165
+OPTIONMENU_TIME_UNITS_POSY = 220
+OPTIONMENU_TIME_UNITS_WIDTH = 120
+LABEL_TIME_ADD_POSX = 297
+LABEL_TIME_ADD_POSY = 190
+BUTTON_TIME_ADD_POSX = 290
+BUTTON_TIME_ADD_POSY = 220
+BUTTON_TIME_ADD_WIDTH = 40
+LABEL_OTHER_POSX = 5
+LABEL_OTHER_POSY = 280
+LABEL_OTHER_OPTION_POSX = 150
+LABEL_OTHER_OPTION_POSY = 250
+OPTIONMENU_OTHER_OPTION_POSX = 85
+OPTIONMENU_OTHER_OPTION_POSY = 280
+OPTIONMENU_OTHER_OPTION_WIDTH = 200
+LABEL_OTHER_ADD_POSX = 297
+LABEL_OTHER_ADD_POSY = 250
+BUTTON_OTHER_ADD_POSX = 290
+BUTTON_OTHER_ADD_POSY = 280
+BUTTON_OTHER_ADD_WIDTH = 40
+
+# Constants Deck Plate 
+NO_TRAY_CONSUMABLES = ["Pre-Amp Thermocycler", "Assay Strip", "Heater/Shaker", "Mag Separator", "Chiller"]
+NO_COLUMN_CONSUMABLES = ["Aux Heater", "Sample Rack", "Quant Strip"]
+TWELVE_COLUMN_CONSUMABLES = ["Pre-Amp Thermocycler", "Mag Separator", "Chiller", "Reagent Cartridge"]
+EIGHT_COLUMN_CONSUMABLES = ["Tip Transfer Tray", "Assay Strip", "Tip Tray"]
+FOUR_COLUMN_CONSUMABLES = ["Heater/Shaker"]
+
+# Image Paths
+IMAGE_PATHS = {
+	'check': './images/check.png'
+}
 
 class BuildProtocolFrame(ctk.CTkFrame):
 	"""
@@ -82,13 +160,21 @@ class BuildProtocolFrame(ctk.CTkFrame):
 		"""
 		# Place the build protocol frame
 		self.place(x=self.posx, y=self.posy)
+		# Create the photoimage for the check mark
+		self.photoimage_check = ctk.CTkImage(
+			dark_image=Image.open(IMAGE_PATHS['check']),
+			size=(IMAGE_CHECK_WIDTH, IMAGE_CHECK_HEIGHT),
+		)
 		# Place the Tips Section
 		self.create_tips_ui()
 		# Place the Motion Section
 		self.create_motion_ui()
 		# Place the Pipettor Section
+		self.create_pipettor_ui()
 		# Place the Time Section
+		self.create_time_ui()
 		# Place the Other Section
+		self.create_other_ui()
 		# Place the Protocol Progress Bar
 		# Place the Protocol Action Treeview
 		# Place the Start Button
@@ -143,7 +229,7 @@ class BuildProtocolFrame(ctk.CTkFrame):
 			width=OPTIONMENU_TIPS_ACTION_WIDTH
 		)
 		self.optionmenu_tips_action.place(x=OPTIONMENU_TIPS_ACTION_POSX, y=OPTIONMENU_TIPS_ACTION_POSY)
-		# Place the add button
+		# Place the add label and button
 
 	def create_motion_ui(self) -> None:
 		"""Deals with creating the UI for the Motion section of the Build Protocol Frame
@@ -215,7 +301,136 @@ class BuildProtocolFrame(ctk.CTkFrame):
 			width=OPTIONMENU_MOTION_TIP_WIDTH
 		)
 		self.optionmenu_motion_tip.place(x=OPTIONMENU_MOTION_TIP_POSX, y=OPTIONMENU_MOTION_TIP_POSY)
-		# Place the add button
+		# Place the add label and button
+		self.label_motion_add = ctk.CTkLabel(master=self, text='Add', font=("Roboto Medium", -14))
+		self.label_motion_add.place(x=LABEL_MOTION_ADD_POSX, y=LABEL_MOTION_ADD_POSY)
+		self.button_motion_add = ctk.CTkButton(
+			master=self,
+			text='',
+			image=self.photoimage_check,
+			fg_color=BUTTON_ADD_COLOR,
+			width=BUTTON_MOTION_ADD_WIDTH,
+			command=self.on_click_motion_add
+		)
+		self.button_motion_add.place(x=BUTTON_MOTION_ADD_POSX, y=BUTTON_MOTION_ADD_POSY)
+
+	def create_pipettor_ui(self) -> None:
+		"""Creates the UI for the pipettor portion of the BuildProtocol view
+		"""
+		# Place the pipettor label
+		self.label_pipettor = ctk.CTkLabel(master=self, text='Pipettor', font=("Roboto Medium", -16))
+		self.label_pipettor.place(x=LABEL_PIPETTOR_POSX, y=LABEL_PIPETTOR_POSY)
+		# Place the volume label and entry
+		self.label_pipettor_volume = ctk.CTkLabel(master=self, text='Volume (uL)', font=("Roboto Medium", -14))
+		self.label_pipettor_volume.place(x=LABEL_PIPETTOR_VOLUME_POSX, y=LABEL_PIPETTOR_VOLUME_POSY)
+		self.pipettor_volume_sv = StringVar()
+		self.pipettor_volume_sv.set('')
+		self.entry_pipettor_volume = ctk.CTkEntry(
+			master=self,
+			textvariable=self.pipettor_volume_sv, 
+			width=ENTRY_PIPETTOR_VOLUME_WIDTH
+		)
+		self.entry_pipettor_volume.place(x=ENTRY_PIPETTOR_VOLUME_POSX, y=ENTRY_PIPETTOR_VOLUME_POSY)
+		# Place the tip label and optionmenu
+		self.label_pipettor_tip = ctk.CTkLabel(master=self, text="Tip (uL)", font=("Roboto Medium", -14))
+		self.label_pipettor_tip.place(x=LABEL_PIPETTOR_TIP_POSX, y=LABEL_PIPETTOR_TIP_POSY)
+		self.pipettor_tip_sv = StringVar()
+		self.pipettor_tip_sv.set('')
+		self.optionmenu_pipettor_tip = ctk.CTkOptionMenu(
+			master=self,
+			variable=self.pipettor_tip_sv,
+			values=('1000', '50', '200',),
+			width=OPTIONMENU_PIPETTOR_TIP_WIDTH
+		)
+		self.optionmenu_pipettor_tip.place(x=OPTIONMENU_PIPETTOR_TIP_POSX, y=OPTIONMENU_PIPETTOR_TIP_POSY)
+		# Place the action label and optionmenu
+		self.label_pipettor_action = ctk.CTkLabel(master=self, text='Action', font=("Roboto Medium", -14))
+		self.label_pipettor_action.place(x=LABEL_PIPETTOR_ACTION_POSX, y=LABEL_PIPETTOR_ACTION_POSY)
+		self.pipettor_action_sv = StringVar()
+		self.pipettor_action_sv.set('Aspirate')
+		self.optionmenu_pipettor_action = ctk.CTkOptionMenu(
+			master=self,
+			variable=self.pipettor_action_sv,
+			values=('Aspirate', 'Dispense', 'Mix'),
+			width=OPTIONMENU_PIPETTOR_ACTION_WIDTH
+		)
+		self.optionmenu_pipettor_action.place(x=OPTIONMENU_PIPETTOR_ACTION_POSX, y=OPTIONMENU_PIPETTOR_ACTION_POSY)
+		# Place the pressure label and optionmenu
+		self.label_pipettor_pressure = ctk.CTkLabel(master=self, text='Pressure', font=("Roboto Medium", -14))
+		self.label_pipettor_pressure.place(x=LABEL_PIPETTOR_PRESSURE_POSX, y=LABEL_PIPETTOR_PRESSURE_POSY)
+		self.pipettor_pressure_sv = StringVar()
+		self.pipettor_pressure_sv.set('High')
+		self.optionmenu_pipettor_pressure = ctk.CTkOptionMenu(
+                        master=self,
+			variable=self.pipettor_pressure_sv,
+			values=('High', 'Low',),
+			width=OPTIONMENU_PIPETTOR_PRESSURE_WIDTH
+		)
+		self.optionmenu_pipettor_pressure.place(x=OPTIONMENU_PIPETTOR_PRESSURE_POSX, y=OPTIONMENU_PIPETTOR_PRESSURE_POSY)
+		# Place the add label and button
+		self.label_pipettor_add = ctk.CTkLabel(master=self, text='Add', font=("Roboto Medium", -14))
+		self.label_pipettor_add.place(x=LABEL_PIPETTOR_ADD_POSX, y=LABEL_PIPETTOR_ADD_POSY)
+		self.button_pipettor_add = ctk.CTkButton(
+			master=self,
+			text='',
+			image=self.photoimage_check,
+			fg_color=BUTTON_ADD_COLOR,
+			width=BUTTON_PIPETTOR_ADD_WIDTH,
+			command=self.on_click_pipettor_add
+		)
+		self.button_pipettor_add.place(x=BUTTON_PIPETTOR_ADD_POSX, y=BUTTON_PIPETTOR_ADD_POSY)
+
+	def create_time_ui(self) -> None:
+		"""Creates the UI for the time portion of the Build Protocol Frame view
+		"""
+		# Place the time label
+		self.label_time = ctk.CTkLabel(master=self, text='Time', font=("Roboto Medium", -16))
+		self.label_time.place(x=LABEL_TIME_POSX, y=LABEL_TIME_POSY)
+		# Place the delay label and entry
+		self.label_time_delay = ctk.CTkLabel(master=self, text='Delay', font=("Roboto Medium", -14))
+		self.label_time_delay.place(x=LABEL_TIME_DELAY_POSX, y=LABEL_TIME_DELAY_POSY)
+		self.time_delay_sv = StringVar()
+		self.time_delay_sv.set('')
+		self.entry_time_delay = ctk.CTkEntry(
+			master=self,
+			textvariable=self.time_delay_sv, 
+			width=ENTRY_TIME_DELAY_WIDTH
+		)
+		self.entry_time_delay.place(x=ENTRY_TIME_DELAY_POSX, y=ENTRY_TIME_DELAY_POSY)
+		# Place the units label and optionmenu
+		self.label_time_units = ctk.CTkLabel(master=self, text='Units', font=("Roboto Medium", -14))
+		self.label_time_units.place(x=LABEL_TIME_UNITS_POSX, y=LABEL_TIME_UNITS_POSY)
+		self.time_units_sv = StringVar()
+		self.time_units_sv.set('seconds')
+		self.optionmenu_time_units = ctk.CTkOptionMenu(
+			master=self,
+			variable=self.time_units_sv,
+			values=('seconds', 'minutes'),
+			width=OPTIONMENU_TIME_UNITS_WIDTH
+		)
+		self.optionmenu_time_units.place(x=OPTIONMENU_TIME_UNITS_POSX, y=OPTIONMENU_TIME_UNITS_POSY)
+		# Place the add label and button
+		self.label_time_add = ctk.CTkLabel(master=self, text='Add', font=("Roboto Medium", -14))
+		self.label_time_add.place(x=LABEL_TIME_ADD_POSX, y=LABEL_TIME_ADD_POSY)
+		self.button_time_add = ctk.CTkButton(
+			master=self,
+			text='',
+			image=self.photoimage_check,
+			fg_color=BUTTON_ADD_COLOR,
+			width=BUTTON_TIME_ADD_WIDTH,
+			command=self.on_click_time_add
+		)
+		self.button_time_add.place(x=BUTTON_TIME_ADD_POSX, y=BUTTON_TIME_ADD_POSY)
+
+	def create_other_ui(self) -> None:
+		"""Create the UI for the other portion of the Build Protocol Frame view
+		"""
+		# Place the other label
+		self.label_other = ctk.CTkLabel(master=self, text='Other', font=("Roboto Medium", -16))
+		self.label_other.place(x=LABEL_OTHER_POSX, y=LABEL_OTHER_POSY)
+		# Place the option label and optionmenu
+		
+		# Place the add label and button
 
 	def callback_tips_tray(self, *args) -> None:
 		"""Deals with what happens if the Tips Tray changes
@@ -269,7 +484,7 @@ class BuildProtocolFrame(ctk.CTkFrame):
 		else:
 			# Make sure the current action is valid
 			if self.tips_action_sv.get() not in ['Pickup', 'Eject']:
-				self.tips_action_sv.set('Eject')
+				self.tips_action_sv.set('Pickup')
 			self.optionmenu_tips_action.configure(values=('Pickup','Eject',))
 			
 	def callback_motion_consumable(self, *args) -> None:
@@ -284,16 +499,16 @@ class BuildProtocolFrame(ctk.CTkFrame):
 		self.motion_tray_sv.set('')
 		self.motion_column_sv.set('')
 		# Check the consumable cases to update the trays, columns, and tips
-		if consumable in ["Assay Strip", "Pre-Amp Thermocycler", "Heater/Shaker", "Mag Separator", "Chiller"]:
+		if consumable in NO_TRAY_CONSUMABLES:
 			# No tray option
 			self.motion_tray_sv.set('')
 			self.optionmenu_motion_tray.configure(values=('',))
 			# Set the column options
-			if consumable in ["Pre-Amp Thermocycler", "Mag Separator", "Chiller"]:
+			if consumable in TWELVE_COLUMN_CONSUMABLES:
 				self.optionmenu_motion_column.configure(values=('1','2','3','4','5','6','7','8','9','10','11','12',))
-			elif consumable in ["Assay Strip"]:
+			elif consumable in EIGHT_COLUMN_CONSUMABLES:
 				self.optionmenu_motion_column.configure(values=('1','2','3','4','5','6','7','8',))
-			elif consumable in ["Heater/Shaker"]:
+			elif consumable in FOUR_COLUMN_CONSUMABLES:
 				self.optionmenu_motion_column.configure(values=('1','2','3','4',))
 			else:
 				self.optionmenu_motion_column.configure(values=('',))
@@ -301,7 +516,7 @@ class BuildProtocolFrame(ctk.CTkFrame):
 			# Allow for tray options
 			self.optionmenu_motion_tray.configure(values=('A', 'B', 'C', 'D',))
 			# Set the column options
-			if consumable in ["Sample Rack", "Aux Heater", "Quant Strip"]:
+			if consumable in NO_COLUMN_CONSUMABLES:
 				self.optionmenu_motion_column.configure(values=('1',))
 			else:
 				self.optionmenu_motion_column.configure(values=('1','2','3','4','5','6','7','8','9','10','11','12',))
@@ -316,3 +531,76 @@ class BuildProtocolFrame(ctk.CTkFrame):
 		tray = self.motion_tray_sv.get()
 		column = self.motion_column_sv.get()
 		tip = self.motion_tip_sv.get()
+
+	def on_click_motion_add(self) -> None:
+		"""On click event for adding a motion action
+		"""
+		# Get the action data
+		consumable = self.motion_consumable_sv.get()
+		tray = self.motion_tray_sv.get()
+		column = self.motion_column_sv.get()
+		tip = self.motion_tip_sv.get()
+		# Make sure consumable is not missing
+		if consumable != '':
+			# Generate the action message
+			action_message = f"Move to {consumable}"
+			if tray != '':
+				action_message = action_message + f" tray {tray}"
+			else:
+				# Make sure this is ok
+				if consumable not in NO_TRAY_CONSUMABLES:
+					print(f"Motion consumable ({consumable}) needs a tray")
+					return None
+			if column != '':
+				action_message = action_message + f" column {column}"
+			else:
+				# Make sure this is ok
+				if consumable not in NO_COLUMN_CONSUMABLES:
+					print(f"Motion consumable ({consumable}) needs a column")
+					return None
+			if tip != '':
+				action_message = action_message + f" with {tip} uL tips"
+			else:
+				action_message = action_message + " without tips"
+		else:
+			print("Motion Consumable Option was not selected")
+			return None
+		print(action_message)
+		# Add the action message to the action treeview
+
+	def on_click_pipettor_add(self) -> None:
+		"""On click event for adding a pipettor action
+		"""
+		# Get the action data
+		try:
+			volume = int(self.pipettor_volume_sv.get())
+		except:
+			print("Pipettor Volume (uL) Entry must be an integer value")
+			return None
+		tip = int(self.pipettor_tip_sv.get())
+		# Make sure the volume is not greater than the tip size
+		assert volume <= tip
+		action = self.pipettor_action_sv.get()
+		pressure = self.pipettor_pressure_sv.get()
+		# Generate the action message
+		action_message = f"{action.title()} {volume} uL with {tip} uL tips at {pressure} pressure"
+		print(action_message)
+		# Add the action to the action treeview
+
+	def on_click_time_add(self) -> None:
+		"""On click event for adding a time action
+		"""
+		# Get the action data
+		try:
+			time_ = int(self.time_delay_sv.get())
+		except:
+			print(f"Time delay entry must be an integer value")
+			return None
+		units = self.time_units_sv.get()
+		# Check units plurality
+		if time_ == 1:
+			units = units[:-1]
+		# Generate the action message
+		action_message = f"Delay for {time_} {units}"
+		print(action_message)
+		# Add the action to the action treeview
