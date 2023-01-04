@@ -20,6 +20,9 @@ class BuildProtocolController:
 		# Set bindings between the view and the controller
 		self.view.bind_button_tips_add(self.add_tips_action)
 		self.view.bind_button_motion_add(self.add_motion_action)
+		self.view.bind_button_pipettor_add(self.add_pipettor_action)
+		self.view.bind_button_time_add(self.add_time_action)
+		self.view.bind_button_other_add(self.add_other_action)
 
 	def insert(self, ID: int, action_message: str) -> None:
 		"""Insert the action message into the action list of the model in the correct order
@@ -102,6 +105,59 @@ class BuildProtocolController:
 		else:
 			print("Motion Consumable Option was not selected")
 			return None
+		# Inset action into the action list
+		self.model.insert(len(self.model.actions), action_message)
+		# Update the view
+		self.view.update_treeview()
+
+	def add_pipettor_action(self, event=None) -> None:
+		"""Deals with adding a pipettor action to the model from the view
+		"""
+		# Get the action data
+		try:
+			volume = int(self.view.pipettor_volume_sv.get())
+		except:
+			print("Pipettor Volume (uL) Entry must be an integer value")
+			return None
+		tip = int(self.view.pipettor_tip_sv.get())
+		# Make sure the volume is not greater than the tip size
+		assert volume <= tip
+		action = self.view.pipettor_action_sv.get()
+		pressure = self.view.pipettor_pressure_sv.get()
+		# Generate the action message
+		action_message = f"{action.title()} {volume} uL with {tip} uL tips at {pressure} pressure"
+		# Inset action into the action list
+		self.model.insert(len(self.model.actions), action_message)
+		# Update the view
+		self.view.update_treeview()
+
+	def add_time_action(self, event=None) -> None:
+		"""Deals with adding a time action to the model from the view
+		"""
+		# Get the action data
+		try:
+			time_ = int(self.view.time_delay_sv.get())
+		except:
+			print(f"Time delay entry must be an integer value")
+			return None
+		units = self.view.time_units_sv.get()
+		# Check units plurality
+		if time_ == 1:
+			units = units[:-1]
+		# Generate the action message
+		action_message = f"Delay for {time_} {units}"
+		# Inset action into the action list
+		self.model.insert(len(self.model.actions), action_message)
+		# Update the view
+		self.view.update_treeview()
+
+	def add_other_action(self, event=None) -> None:
+		"""Deals with adding an other action to the model from the view
+		"""
+		# Get the action data
+		other = self.view.other_option_sv.get()
+		# Generate the action message
+		action_message = other
 		# Inset action into the action list
 		self.model.insert(len(self.model.actions), action_message)
 		# Update the view

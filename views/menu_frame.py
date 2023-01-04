@@ -36,9 +36,6 @@ class MenuFrame(ctk.CTkFrame):
 		self.right_frame_width = right_frame_width
 		self.right_frame_height = right_frame_height
 		self.current_view: ctk.CTkFrame = None
-		#self.image_frame = ImageFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
-		#self.thermocycle_frame = ThermocycleFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
-		#self.build_protocol_frame = BuildProtocolFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
 		super().__init__(
 			master=self.master, 
 			width = self.width,
@@ -75,10 +72,11 @@ class MenuFrame(ctk.CTkFrame):
 			#frame = self.image_frame
 			a = 1
 		elif button_title == 'Thermocycle':
-			#frame = self.thermocycle_frame
-			a = 1
+			frame = self.master.thermocycle_frame
+			#frame = ThermocycleFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
 		elif button_title == "Build Protocol":
 			frame = self.master.build_protocol_frame
+			#frame = BuildProtocolFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
 		elif button_title == 'Optimize':
 			print(button_title)
 		elif button_title == 'Service':
@@ -101,4 +99,5 @@ class MenuFrame(ctk.CTkFrame):
 	def destroy_current_view(self) -> None:
 		# Clean up the Right Frame for updating
 		for widget in self.current_view.winfo_children():
-			widget.destroy()
+			#widget.destroy()
+			widget.place_forget()

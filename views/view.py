@@ -9,6 +9,7 @@ from models.model import Model
 
 from views.menu_frame import MenuFrame
 
+from views.thermocycle_frame import ThermocycleFrame
 from views.build_protocol_frame import BuildProtocolFrame
 
 # Constants
@@ -33,6 +34,7 @@ class View(ctk.CTk):
 		self.title(TITLE)
 		self.geometry(f"{WIDTH}x{HEIGHT}")
 		self.menu_frame = MenuFrame(self, MENU_WIDTH, MENU_HEIGHT, MENU_POSX, MENU_POSY, RIGHT_FRAME_WIDTH, RIGHT_FRAME_HEIGHT)
+		self.thermocycle_frame = ThermocycleFrame(self, RIGHT_FRAME_WIDTH, RIGHT_FRAME_HEIGHT, MENU_WIDTH, 0)
 		self.build_protocol_frame = BuildProtocolFrame(self, RIGHT_FRAME_WIDTH, RIGHT_FRAME_HEIGHT, MENU_WIDTH, 0)
 		self.create_ui()
 		

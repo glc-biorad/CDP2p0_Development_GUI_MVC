@@ -217,17 +217,14 @@ class ThermocycleFrame(ctk.CTkFrame):
 			height=self.height,
 			corner_radius=0,
 		)
+		self.create_ui()
 
 	def create_ui(self) -> None:
 		"""Deals with generation of the ThermocycleView UI"""
-		# Place Thermocycle Frame
-		self.place(x=self.posx, y=self.posy)
 		# Place the Thermocycler Protocol Label
 		self.label_thermocycler_protocol = ctk.CTkLabel(master=self, text="Thermocycler Protocol", font=("Roboto Bold", -20))
-		self.label_thermocycler_protocol.place(x=LABEL_THERMOCYCLER_PROTOCOL_POSX, y=LABEL_THERMOCYCLER_PROTOCOL_POSY)
 		# Place the Thermocycler Option Menu
 		self.label_thermocycler = ctk.CTkLabel(master=self, text='Thermocycler', font=("Roboto Light", -16))
-		self.label_thermocycler.place(x=LABEL_THERMOCYCLER_POSX, y=LABEL_THERMOCYCLER_POSY)
 		self.thermocycler_sv = self.controller.get_thermocycler_sv(1)
 		self.thermocycler_sv.trace('w', self.callback_thermocycler)
 		self.optionmenu_thermocycler = ctk.CTkOptionMenu(
@@ -235,10 +232,8 @@ class ThermocycleFrame(ctk.CTkFrame):
 			variable=self.thermocycler_sv,
 			values=('A', 'B', 'C', 'D'),
 		)
-		self.optionmenu_thermocycler.place(x=OPTIONMENU_THERMOCYCLER_POSX, y=OPTIONMENU_THERMOCYCLER_POSY)
 		# Place the Cycles Entry
 		self.label_cycles = ctk.CTkLabel(master=self, text='Cycles', font=("Roboto Light", -16))
-		self.label_cycles.place(x=LABEL_CYCLES_POSX, y=LABEL_CYCLES_POSY)
 		self.cycles_sv = self.controller.get_cycles_sv(1)
 		self.cycles_sv.trace('w', self.callback_cycles)
 		self.entry_cycles = ctk.CTkEntry(
@@ -246,56 +241,48 @@ class ThermocycleFrame(ctk.CTkFrame):
 			textvariable=self.cycles_sv,
 		)
 		self.entry_cycles.bind('<FocusOut>', self.callback_cycles)
-		self.entry_cycles.place(x=ENTRY_CYCLES_POSX, y=ENTRY_CYCLES_POSY)
 		# Place the Thermocycler Image
 		self.photoimage_thermocycler_rails = ctk.CTkImage(
 			dark_image=Image.open(IMAGE_PATHS['thermocycler_rails']),
 			size=(IMAGE_THERMOCYCLER_RAILS_WIDTH, IMAGE_THERMOCYCLER_RAILS_HEIGHT),
 		)
 		self.image_thermocycler_rails = ctk.CTkLabel(master=self, text='', image=self.photoimage_thermocycler_rails)
-		self.image_thermocycler_rails.place(x=IMAGE_THERMOCYCLER_RAILS_POSX, y=IMAGE_THERMOCYCLER_RAILS_POSY)
 		self.image_thermocycler_rails.bind('<Button-1>', self.on_click_rails)
 		self.photoimage_thermocycler_tray_ab = ctk.CTkImage(
 			dark_image=Image.open(IMAGE_PATHS['thermocycler_tray']),
 			size=(IMAGE_THERMOCYCLER_TRAY_AB_WIDTH, IMAGE_THERMOCYCLER_TRAY_AB_HEIGHT),
 		)
 		self.image_thermocycler_tray_ab = ctk.CTkLabel(master=self, text='', image=self.photoimage_thermocycler_tray_ab)
-		self.image_thermocycler_tray_ab.place(x=IMAGE_THERMOCYCLER_TRAY_AB_POSX, y=IMAGE_THERMOCYCLER_TRAY_AB_POSY)
 		self.image_thermocycler_tray_ab.bind('<Button-1>', self.on_click_tray_ab)
 		self.photoimage_thermocycler_block_a = ctk.CTkImage(
 			dark_image=Image.open(IMAGE_PATHS['thermocycler_block_raised']),
 			size=(IMAGE_THERMOCYCLER_BLOCK_A_WIDTH, IMAGE_THERMOCYCLER_BLOCK_A_HEIGHT),
 		)
 		self.image_thermocycler_block_a = ctk.CTkLabel(master=self, text='', image=self.photoimage_thermocycler_block_a)
-		self.image_thermocycler_block_a.place(x=IMAGE_THERMOCYCLER_BLOCK_A_POSX, y=IMAGE_THERMOCYCLER_BLOCK_A_POSY)
 		self.image_thermocycler_block_a.bind('<Button-1>', self.on_click_thermocycler_a)
 		self.photoimage_thermocycler_block_b = ctk.CTkImage(
 			dark_image=Image.open(IMAGE_PATHS['thermocycler_block_raised']),
 			size=(IMAGE_THERMOCYCLER_BLOCK_B_WIDTH, IMAGE_THERMOCYCLER_BLOCK_B_HEIGHT),
 		)
 		self.image_thermocycler_block_b = ctk.CTkLabel(master=self, text='', image=self.photoimage_thermocycler_block_b)
-		self.image_thermocycler_block_b.place(x=IMAGE_THERMOCYCLER_BLOCK_B_POSX, y=IMAGE_THERMOCYCLER_BLOCK_B_POSY)
 		self.image_thermocycler_block_b.bind('<Button-1>', self.on_click_thermocycler_b)
 		self.photoimage_thermocycler_tray_cd = ctk.CTkImage(
 			dark_image=Image.open(IMAGE_PATHS['thermocycler_tray']),
 			size=(IMAGE_THERMOCYCLER_TRAY_CD_WIDTH, IMAGE_THERMOCYCLER_TRAY_CD_HEIGHT),
 		)
 		self.image_thermocycler_tray_cd = ctk.CTkLabel(master=self, text='', image=self.photoimage_thermocycler_tray_cd)
-		self.image_thermocycler_tray_cd.place(x=IMAGE_THERMOCYCLER_TRAY_CD_POSX, y=IMAGE_THERMOCYCLER_TRAY_CD_POSY)
 		self.image_thermocycler_tray_cd.bind('<Button-1>', self.on_click_tray_cd)
 		self.photoimage_thermocycler_block_c = ctk.CTkImage(
 			dark_image=Image.open(IMAGE_PATHS['thermocycler_block_raised']),
 			size=(IMAGE_THERMOCYCLER_BLOCK_C_WIDTH, IMAGE_THERMOCYCLER_BLOCK_C_HEIGHT),
 		)
 		self.image_thermocycler_block_c = ctk.CTkLabel(master=self, text='', image=self.photoimage_thermocycler_block_c)
-		self.image_thermocycler_block_c.place(x=IMAGE_THERMOCYCLER_BLOCK_C_POSX, y=IMAGE_THERMOCYCLER_BLOCK_C_POSY)
 		self.image_thermocycler_block_c.bind('<Button-1>', self.on_click_thermocycler_c)
 		self.photoimage_thermocycler_block_d = ctk.CTkImage(
 			dark_image=Image.open(IMAGE_PATHS['thermocycler_block_raised']),
 			size=(IMAGE_THERMOCYCLER_BLOCK_D_WIDTH, IMAGE_THERMOCYCLER_BLOCK_D_HEIGHT),
 		)
 		self.image_thermocycler_block_d = ctk.CTkLabel(master=self, text='', image=self.photoimage_thermocycler_block_d)
-		self.image_thermocycler_block_d.place(x=IMAGE_THERMOCYCLER_BLOCK_D_POSX, y=IMAGE_THERMOCYCLER_BLOCK_D_POSY)
 		self.image_thermocycler_block_d.bind('<Button-1>', self.on_click_thermocycler_d)
 		self.button_block_left = ctk.CTkButton(
 			master=self,
@@ -307,7 +294,6 @@ class ThermocycleFrame(ctk.CTkFrame):
 			fg_color='black',
 		
 		)
-		self.button_block_left.place(x=BUTTON_BLOCK_LEFT_POSX, y=BUTTON_BLOCK_LEFT_POSY)
 		self.button_block_right = ctk.CTkButton(
 			master=self,
 			text='',
@@ -318,7 +304,6 @@ class ThermocycleFrame(ctk.CTkFrame):
 			fg_color='black',
 		
 		)
-		self.button_block_right.place(x=BUTTON_BLOCK_RIGHT_POSX, y=BUTTON_BLOCK_RIGHT_POSY)
 		self.button_block_top = ctk.CTkButton(
 			master=self,
 			text='',
@@ -329,7 +314,6 @@ class ThermocycleFrame(ctk.CTkFrame):
 			fg_color='black',
 		
 		)
-		self.button_block_top.place(x=BUTTON_BLOCK_TOP_POSX, y=BUTTON_BLOCK_TOP_POSY)
 		self.button_block_bottom = ctk.CTkButton(
 			master=self,
 			text='',
@@ -340,7 +324,6 @@ class ThermocycleFrame(ctk.CTkFrame):
 			fg_color='black',
 		
 		)
-		self.button_block_bottom.place(x=BUTTON_BLOCK_BOTTOM_POSX, y=BUTTON_BLOCK_BOTTOM_POSY)
 		# Place the Start Button
 		self.button_start = ctk.CTkButton(
 			master=self,
@@ -349,7 +332,6 @@ class ThermocycleFrame(ctk.CTkFrame):
 			fg_color='#4C7BD3',
 			width=BUTTON_START_WIDTH,
 		)
-		self.button_start.place(x=BUTTON_START_POSX, y=BUTTON_START_POSY)
 		# Place the Load Button
 		self.button_load = ctk.CTkButton(
 			master=self,
@@ -357,7 +339,6 @@ class ThermocycleFrame(ctk.CTkFrame):
 			command=self.on_load,
 			width=BUTTON_LOAD_WIDTH,
 		)
-		self.button_load.place(x=BUTTON_LOAD_POSX, y=BUTTON_LOAD_POSY)
 		# Place the Save Button
 		self.button_save = ctk.CTkButton(
 			master=self,
@@ -365,7 +346,6 @@ class ThermocycleFrame(ctk.CTkFrame):
 			command=self.on_save,
 			width=BUTTON_SAVE_WIDTH,
 		)
-		self.button_save.place(x=BUTTON_SAVE_POSX, y=BUTTON_SAVE_POSY)
 		# Place the Home Button
 		self.button_home = ctk.CTkButton(
 			master=self,
@@ -373,7 +353,6 @@ class ThermocycleFrame(ctk.CTkFrame):
 			command=self.on_home,
 			width=BUTTON_HOME_WIDTH,
 		)
-		self.button_home.place(x=BUTTON_HOME_POSX, y=BUTTON_HOME_POSY)
 		# Place the Thermocycler ProgressBar
 		self.progressbar_thermocycler = ctk.CTkProgressBar(
 			master=self,
@@ -385,7 +364,6 @@ class ThermocycleFrame(ctk.CTkFrame):
 			corner_radius=0,
 		)
 		self.progressbar_thermocycler.set(0)
-		self.progressbar_thermocycler.place(x=PROGRESSBAR_THERMOCYCLER_POSX, y=PROGRESSBAR_THERMOCYCLER_POSY)
 		# Place the Thermocycle Protocol Figure (Default is A)
 		self.create_thermocycler_protocol_figure_ui(1)
 		# Place the Thermometer Icon
@@ -394,46 +372,20 @@ class ThermocycleFrame(ctk.CTkFrame):
 			size=(IMAGE_THERMOMETER_WIDTH, IMAGE_THERMOMETER_HEIGHT),
 		)
 		self.image_thermometer = ctk.CTkLabel(master=self, text='', image=self.photoimage_thermometer)
-		self.image_thermometer.place(x=IMAGE_THERMOMETER_POSX, y=IMAGE_THERMOMETER_POSY)
 		# Place the Temperature Units Label
 		self.label_first_denature_temperature_unit = ctk.CTkLabel(master=self, text='C', font=("Roboto Light",-16))
-		self.label_first_denature_temperature_unit.place(
-			x=LABEL_FIRST_DENATURE_TEMPERATURE_UNIT_POSX, 
-			y=LABEL_FIRST_DENATURE_TEMPERATURE_UNIT_POSY
-		)
 		self.label_anneal_temperature_unit = ctk.CTkLabel(master=self, text='C', font=("Roboto Light",-16))
-		self.label_anneal_temperature_unit.place(
-			x=LABEL_ANNEAL_TEMPERATURE_UNIT_POSX, 
-			y=LABEL_ANNEAL_TEMPERATURE_UNIT_POSY
-		)
 		self.label_second_denature_temperature_unit = ctk.CTkLabel(master=self, text='C', font=("Roboto Light",-16))
-		self.label_second_denature_temperature_unit.place(
-			x=LABEL_SECOND_DENATURE_TEMPERATURE_UNIT_POSX, 
-			y=LABEL_SECOND_DENATURE_TEMPERATURE_UNIT_POSY
-		)
 		# Place the Clock Icon
 		self.photoimage_clock = ctk.CTkImage(
 			dark_image=Image.open(IMAGE_PATHS['clock']),
 			size=(IMAGE_CLOCK_WIDTH, IMAGE_CLOCK_HEIGHT),
 		)
 		self.image_clock = ctk.CTkLabel(master=self, text='', image=self.photoimage_clock)
-		self.image_clock.place(x=IMAGE_CLOCK_POSX, y=IMAGE_CLOCK_POSY)
 		# Place the Time Units Labels
 		self.label_first_denature_time_unit = ctk.CTkLabel(master=self, text='min', font=("Roboto Light",-16))
-		self.label_first_denature_time_unit.place(
-			x=LABEL_FIRST_DENATURE_TIME_UNIT_POSX, 
-			y=LABEL_FIRST_DENATURE_TIME_UNIT_POSY
-		)
 		self.label_anneal_time_unit = ctk.CTkLabel(master=self, text='sec', font=("Roboto Light",-16))
-		self.label_anneal_time_unit.place(
-			x=LABEL_ANNEAL_TIME_UNIT_POSX, 
-			y=LABEL_ANNEAL_TIME_UNIT_POSY
-		)
 		self.label_second_denature_time_unit = ctk.CTkLabel(master=self, text='sec', font=("Roboto Light",-16))
-		self.label_second_denature_time_unit.place(
-			x=LABEL_SECOND_DENATURE_TIME_UNIT_POSX, 
-			y=LABEL_SECOND_DENATURE_TIME_UNIT_POSY
-		)
 		# Place the 1st Denature Temperature Entry
 		self.first_denature_temperature_sv = self.controller.get_first_denature_temperature_sv(1)
 		self.first_denature_temperature_sv.trace('w', self.callback_first_denature_temperature)
@@ -443,7 +395,6 @@ class ThermocycleFrame(ctk.CTkFrame):
 			width=ENTRY_FIRST_DENATURE_TEMP_WIDTH,
 		)
 		self.entry_first_denature_temp.bind('<FocusOut>', self.focus_out_temperature)
-		self.entry_first_denature_temp.place(x=ENTRY_FIRST_DENATURE_TEMP_POSX, y=ENTRY_FIRST_DENATURE_TEMP_POSY)
 		# Place the Anneal Temperature Entry
 		self.anneal_temperature_sv = self.controller.get_anneal_temperature_sv(1)
 		self.anneal_temperature_sv.trace('w', self.callback_anneal_temperature)
@@ -453,7 +404,6 @@ class ThermocycleFrame(ctk.CTkFrame):
 			width=ENTRY_ANNEAL_TEMP_WIDTH,
 		)
 		self.entry_anneal_temp.bind('<FocusOut>', self.focus_out_temperature)
-		self.entry_anneal_temp.place(x=ENTRY_ANNEAL_TEMP_POSX, y=ENTRY_ANNEAL_TEMP_POSY)
 		# Place the 2nd Denature Temperature Entry
 		self.second_denature_temperature_sv = self.controller.get_second_denature_temperature_sv(1)
 		self.second_denature_temperature_sv.trace('w', self.callback_second_denature_temperature)
@@ -463,7 +413,6 @@ class ThermocycleFrame(ctk.CTkFrame):
 			width=ENTRY_SECOND_DENATURE_TEMP_WIDTH,
 		)
 		self.entry_second_denature_temp.bind('<FocusOut>', self.focus_out_temperature)
-		self.entry_second_denature_temp.place(x=ENTRY_SECOND_DENATURE_TEMP_POSX, y=ENTRY_SECOND_DENATURE_TEMP_POSY)
 		# Place the 1st Denature Time Entry
 		self.first_denature_time_sv = self.controller.get_first_denature_time_sv(1)
 		self.first_denature_time_sv.trace('w', self.callback_first_denature_time)
@@ -473,7 +422,6 @@ class ThermocycleFrame(ctk.CTkFrame):
 			width=ENTRY_FIRST_DENATURE_TIME_WIDTH,
 		)
 		self.entry_first_denature_time.bind('<FocusOut>', self.focus_out_time)
-		self.entry_first_denature_time.place(x=ENTRY_FIRST_DENATURE_TIME_POSX, y=ENTRY_FIRST_DENATURE_TIME_POSY)
 		# Place the Anneal Time Entry
 		self.anneal_time_sv = self.controller.get_anneal_time_sv(1)
 		self.anneal_time_sv.trace('w', self.callback_anneal_time)
@@ -483,7 +431,6 @@ class ThermocycleFrame(ctk.CTkFrame):
 			width=ENTRY_ANNEAL_TIME_WIDTH,
 		)
 		self.entry_anneal_time.bind('<FocusOut>', self.focus_out_time)
-		self.entry_anneal_time.place(x=ENTRY_ANNEAL_TIME_POSX, y=ENTRY_ANNEAL_TIME_POSY)
 		# Place the 2nd Denature Time Entry
 		self.second_denature_time_sv = self.controller.get_second_denature_time_sv(1)
 		self.second_denature_time_sv.trace('w', self.callback_second_denature_time)
@@ -493,10 +440,8 @@ class ThermocycleFrame(ctk.CTkFrame):
 			width=ENTRY_SECOND_DENATURE_TIME_WIDTH,
 		)
 		self.entry_second_denature_time.bind('<FocusOut>', self.focus_out_time)
-		self.entry_second_denature_time.place(x=ENTRY_SECOND_DENATURE_TIME_POSX, y=ENTRY_SECOND_DENATURE_TIME_POSY)
 		# Place the A Checkbox
 		self.label_a = ctk.CTkLabel(master=self, text='A', font=("Roboto Bold", -12))
-		self.label_a.place(x=LABEL_A_POSX, y=LABEL_A_POSY)
 		self.use_a_iv = self.controller.get_use_a_iv(1)
 		self.checkbox_a = ctk.CTkCheckBox(
 			master=self,
@@ -505,10 +450,8 @@ class ThermocycleFrame(ctk.CTkFrame):
 			onvalue=1,
 			offvalue=0,
 		)
-		self.checkbox_a.place(x=CHECKBOX_A_POSX, y=CHECKBOX_A_POSY)
 		# Place the B Checkbox
 		self.label_b = ctk.CTkLabel(master=self, text='B', font=("Roboto Bold", -12))
-		self.label_b.place(x=LABEL_B_POSX, y=LABEL_B_POSY)
 		self.use_b_iv = self.controller.get_use_b_iv(2)
 		self.checkbox_b = ctk.CTkCheckBox(
 			master=self,
@@ -517,10 +460,8 @@ class ThermocycleFrame(ctk.CTkFrame):
 			onvalue=1,
 			offvalue=0,
 		)
-		self.checkbox_b.place(x=CHECKBOX_B_POSX, y=CHECKBOX_B_POSY)
 		# Place the C Checkbox
 		self.label_c = ctk.CTkLabel(master=self, text='C', font=("Roboto Bold", -12))
-		self.label_c.place(x=LABEL_C_POSX, y=LABEL_C_POSY)
 		self.use_c_iv = self.controller.get_use_c_iv(3)
 		self.checkbox_c = ctk.CTkCheckBox(
 			master=self,
@@ -529,10 +470,8 @@ class ThermocycleFrame(ctk.CTkFrame):
 			onvalue=1,
 			offvalue=0,
 		)
-		self.checkbox_c.place(x=CHECKBOX_C_POSX, y=CHECKBOX_C_POSY)
 		# Place the D Checkbox
 		self.label_d = ctk.CTkLabel(master=self, text='D', font=("Roboto Bold", -12))
-		self.label_d.place(x=LABEL_D_POSX, y=LABEL_D_POSY)
 		self.use_d_iv = self.controller.get_use_d_iv(4)
 		self.checkbox_d = ctk.CTkCheckBox(
 			master=self,
@@ -541,6 +480,98 @@ class ThermocycleFrame(ctk.CTkFrame):
 			onvalue=1,
 			offvalue=0,
 		)
+
+	def place_ui(self) -> None:
+		"""Deals with generation of the ThermocycleView UI"""
+		# Place Thermocycle Frame
+		self.place(x=self.posx, y=self.posy)
+		print(f"posx={self.posx}")
+		print(f"winfo_x={self.winfo_x()}")
+		# Place the Thermocycler Protocol Label
+		self.label_thermocycler_protocol.place(x=LABEL_THERMOCYCLER_PROTOCOL_POSX, y=LABEL_THERMOCYCLER_PROTOCOL_POSY)
+		# Place the Thermocycler Option Menu
+		self.label_thermocycler.place(x=LABEL_THERMOCYCLER_POSX, y=LABEL_THERMOCYCLER_POSY)
+		self.optionmenu_thermocycler.place(x=OPTIONMENU_THERMOCYCLER_POSX, y=OPTIONMENU_THERMOCYCLER_POSY)
+		# Place the Cycles Entry
+		self.label_cycles.place(x=LABEL_CYCLES_POSX, y=LABEL_CYCLES_POSY)
+		self.entry_cycles.place(x=ENTRY_CYCLES_POSX, y=ENTRY_CYCLES_POSY)
+		# Place the Thermocycler Image
+		self.image_thermocycler_rails.place(x=IMAGE_THERMOCYCLER_RAILS_POSX, y=IMAGE_THERMOCYCLER_RAILS_POSY)
+		self.image_thermocycler_tray_ab.place(x=IMAGE_THERMOCYCLER_TRAY_AB_POSX, y=IMAGE_THERMOCYCLER_TRAY_AB_POSY)
+		self.image_thermocycler_block_a.place(x=IMAGE_THERMOCYCLER_BLOCK_A_POSX, y=IMAGE_THERMOCYCLER_BLOCK_A_POSY)
+		self.image_thermocycler_block_b.place(x=IMAGE_THERMOCYCLER_BLOCK_B_POSX, y=IMAGE_THERMOCYCLER_BLOCK_B_POSY)
+		self.image_thermocycler_tray_cd.place(x=IMAGE_THERMOCYCLER_TRAY_CD_POSX, y=IMAGE_THERMOCYCLER_TRAY_CD_POSY)
+		self.image_thermocycler_block_c.place(x=IMAGE_THERMOCYCLER_BLOCK_C_POSX, y=IMAGE_THERMOCYCLER_BLOCK_C_POSY)
+		self.image_thermocycler_block_d.place(x=IMAGE_THERMOCYCLER_BLOCK_D_POSX, y=IMAGE_THERMOCYCLER_BLOCK_D_POSY)
+		self.button_block_left.place(x=BUTTON_BLOCK_LEFT_POSX, y=BUTTON_BLOCK_LEFT_POSY)
+		self.button_block_right.place(x=BUTTON_BLOCK_RIGHT_POSX, y=BUTTON_BLOCK_RIGHT_POSY)
+		self.button_block_top.place(x=BUTTON_BLOCK_TOP_POSX, y=BUTTON_BLOCK_TOP_POSY)
+		self.button_block_bottom.place(x=BUTTON_BLOCK_BOTTOM_POSX, y=BUTTON_BLOCK_BOTTOM_POSY)
+		# Place the Start Button
+		self.button_start.place(x=BUTTON_START_POSX, y=BUTTON_START_POSY)
+		# Place the Load Button
+		self.button_load.place(x=BUTTON_LOAD_POSX, y=BUTTON_LOAD_POSY)
+		# Place the Save Button
+		self.button_save.place(x=BUTTON_SAVE_POSX, y=BUTTON_SAVE_POSY)
+		# Place the Home Button
+		self.button_home.place(x=BUTTON_HOME_POSX, y=BUTTON_HOME_POSY)
+		# Place the Thermocycler ProgressBar
+		self.progressbar_thermocycler.place(x=PROGRESSBAR_THERMOCYCLER_POSX, y=PROGRESSBAR_THERMOCYCLER_POSY)
+		# Place the Thermocycle Protocol Figure (Default is A)
+		self.create_thermocycler_protocol_figure_ui(1)
+		# Place the Thermometer Icon
+		self.image_thermometer.place(x=IMAGE_THERMOMETER_POSX, y=IMAGE_THERMOMETER_POSY)
+		# Place the Temperature Units Label
+		self.label_first_denature_temperature_unit.place(
+			x=LABEL_FIRST_DENATURE_TEMPERATURE_UNIT_POSX, 
+			y=LABEL_FIRST_DENATURE_TEMPERATURE_UNIT_POSY
+		)
+		self.label_anneal_temperature_unit.place(
+			x=LABEL_ANNEAL_TEMPERATURE_UNIT_POSX, 
+			y=LABEL_ANNEAL_TEMPERATURE_UNIT_POSY
+		)
+		self.label_second_denature_temperature_unit.place(
+			x=LABEL_SECOND_DENATURE_TEMPERATURE_UNIT_POSX, 
+			y=LABEL_SECOND_DENATURE_TEMPERATURE_UNIT_POSY
+		)
+		# Place the Clock Icon
+		self.image_clock.place(x=IMAGE_CLOCK_POSX, y=IMAGE_CLOCK_POSY)
+		# Place the Time Units Labels
+		self.label_first_denature_time_unit.place(
+			x=LABEL_FIRST_DENATURE_TIME_UNIT_POSX, 
+			y=LABEL_FIRST_DENATURE_TIME_UNIT_POSY
+		)
+		self.label_anneal_time_unit.place(
+			x=LABEL_ANNEAL_TIME_UNIT_POSX, 
+			y=LABEL_ANNEAL_TIME_UNIT_POSY
+		)
+		self.label_second_denature_time_unit.place(
+			x=LABEL_SECOND_DENATURE_TIME_UNIT_POSX, 
+			y=LABEL_SECOND_DENATURE_TIME_UNIT_POSY
+		)
+		# Place the 1st Denature Temperature Entry
+		self.entry_first_denature_temp.place(x=ENTRY_FIRST_DENATURE_TEMP_POSX, y=ENTRY_FIRST_DENATURE_TEMP_POSY)
+		# Place the Anneal Temperature Entry
+		self.entry_anneal_temp.place(x=ENTRY_ANNEAL_TEMP_POSX, y=ENTRY_ANNEAL_TEMP_POSY)
+		# Place the 2nd Denature Temperature Entry
+		self.entry_second_denature_temp.place(x=ENTRY_SECOND_DENATURE_TEMP_POSX, y=ENTRY_SECOND_DENATURE_TEMP_POSY)
+		# Place the 1st Denature Time Entry
+		self.entry_first_denature_time.place(x=ENTRY_FIRST_DENATURE_TIME_POSX, y=ENTRY_FIRST_DENATURE_TIME_POSY)
+		# Place the Anneal Time Entry
+		self.entry_anneal_time.place(x=ENTRY_ANNEAL_TIME_POSX, y=ENTRY_ANNEAL_TIME_POSY)
+		# Place the 2nd Denature Time Entry
+		self.entry_second_denature_time.place(x=ENTRY_SECOND_DENATURE_TIME_POSX, y=ENTRY_SECOND_DENATURE_TIME_POSY)
+		# Place the A Checkbox
+		self.label_a.place(x=LABEL_A_POSX, y=LABEL_A_POSY)
+		self.checkbox_a.place(x=CHECKBOX_A_POSX, y=CHECKBOX_A_POSY)
+		# Place the B Checkbox
+		self.label_b.place(x=LABEL_B_POSX, y=LABEL_B_POSY)
+		self.checkbox_b.place(x=CHECKBOX_B_POSX, y=CHECKBOX_B_POSY)
+		# Place the C Checkbox
+		self.label_c.place(x=LABEL_C_POSX, y=LABEL_C_POSY)
+		self.checkbox_c.place(x=CHECKBOX_C_POSX, y=CHECKBOX_C_POSY)
+		# Place the D Checkbox
+		self.label_d.place(x=LABEL_D_POSX, y=LABEL_D_POSY)
 		self.checkbox_d.place(x=CHECKBOX_D_POSX, y=CHECKBOX_D_POSY)
 
 	def callback_cycles(self, event):
@@ -553,16 +584,24 @@ class ThermocycleFrame(ctk.CTkFrame):
 	def on_click_tray_ab(self, event):
 		""" Deals with on_click events for Thermocycler Tray AB"""
 		# Get the current posx
-		posx = self.image_thermocycler_tray_ab.place_info()['x']
+		posx = int(self.image_thermocycler_tray_ab.place_info()['x'])
 		# Make sure the tray is allowed to close
 		if True:
+			if posx == TRAY_CLOSED_POSX:
+				x0 = posx
+				x = IMAGE_THERMOCYCLER_TRAY_AB_POSX
+			else:
+				x0 = IMAGE_THERMOCYCLER_TRAY_AB_POSX
+				x = TRAY_CLOSED_POSX
 			# Change the posx
 			thread = threading.Thread(
 				target=self.move_tray, 
 				args=(
 					self.image_thermocycler_tray_ab, 
-					IMAGE_THERMOCYCLER_TRAY_AB_POSX,
-					TRAY_CLOSED_POSX, 
+					x0,
+					x,
+					#IMAGE_THERMOCYCLER_TRAY_AB_POSX,
+					#TRAY_CLOSED_POSX, 
 				)
 			)
 			thread.start()
@@ -570,16 +609,22 @@ class ThermocycleFrame(ctk.CTkFrame):
 	def on_click_tray_cd(self, event):
 		""" Deals with on_click events for Thermocycler Tray CD"""
 		# Get the current posx
-		posx = self.image_thermocycler_tray_cd.place_info()['x']
+		posx = int(self.image_thermocycler_tray_cd.place_info()['x'])
 		# Make sure the tray is allowed to close
 		if True:
+			if posx == TRAY_CLOSED_POSX:
+				x0 = posx
+				x = IMAGE_THERMOCYCLER_TRAY_CD_POSX
+			else:
+				x0 = IMAGE_THERMOCYCLER_TRAY_CD_POSX
+				x = TRAY_CLOSED_POSX
 			# Change the posx
 			thread = threading.Thread(
 				target=self.move_tray, 
 				args=(
 					self.image_thermocycler_tray_cd, 
-					IMAGE_THERMOCYCLER_TRAY_CD_POSX,
-					TRAY_CLOSED_POSX, 
+					x0,
+					x,
 				)
 			)
 			thread.start()

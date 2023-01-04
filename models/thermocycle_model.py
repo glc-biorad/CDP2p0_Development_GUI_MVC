@@ -77,7 +77,14 @@ class ThermocycleModel:
 		# Execute the query
 		self.cursor.execute(query)
 		# Get the array
-		arr = self.cursor.fetchall()[0]
+		try:
+			arr = self.cursor.fetchall()[0]
+		except:
+			self.insert(1,'A',40,84,50,84,3,40,30,1,1,1)
+			self.insert(2,'B',40,84,50,84,3,40,30,1,1,1)
+			self.insert(3,'C',40,84,50,84,3,40,30,0,1,1)
+			self.insert(4,'D',40,84,50,84,3,40,30,1,1,1)
+			arr = self.cursor.fetchall()[0]
 		# Convert to a dictionary to return
 		return {
 			'ID': int(arr[0]),
