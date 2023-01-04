@@ -22,5 +22,5 @@ class Model:
 		return self.thermocycle_model
 
 	def get_build_protocol_model(self) -> BuildProtocolModel:
-		self.build_protocol_model = BuildProtocolModel()
+		self.build_protocol_model = BuildProtocolModel(DB_NAME, self.cursor, self.connection)
 		return self.build_protocol_model

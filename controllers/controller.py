@@ -12,8 +12,11 @@ class Controller:
 		self.view = view
 		self.build_protocol_controller = BuildProtocolController(
 			model=self.model.get_build_protocol_model(),
-			view=self.view.menu_frame.build_protocol_frame
+			view=self.view.build_protocol_frame
 		)
+
+	def setup_bindings(self) -> None:
+		self.build_protocol_controller.setup_bindings()
 
 	def run(self) -> None:
 		self.view.mainloop()

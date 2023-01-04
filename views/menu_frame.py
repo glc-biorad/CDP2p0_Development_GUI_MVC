@@ -36,9 +36,9 @@ class MenuFrame(ctk.CTkFrame):
 		self.right_frame_width = right_frame_width
 		self.right_frame_height = right_frame_height
 		self.current_view: ctk.CTkFrame = None
-		self.image_frame = ImageFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
-		self.thermocycle_frame = ThermocycleFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
-		self.build_protocol_frame = BuildProtocolFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
+		#self.image_frame = ImageFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
+		#self.thermocycle_frame = ThermocycleFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
+		#self.build_protocol_frame = BuildProtocolFrame(self.master, self.right_frame_width, self.right_frame_height, self.width, 0)
 		super().__init__(
 			master=self.master, 
 			width = self.width,
@@ -72,11 +72,13 @@ class MenuFrame(ctk.CTkFrame):
 		if button_title == 'Home':
 			print(button_title)
 		elif button_title == 'Image':
-			frame = self.image_frame
+			#frame = self.image_frame
+			a = 1
 		elif button_title == 'Thermocycle':
-			frame = self.thermocycle_frame
+			#frame = self.thermocycle_frame
+			a = 1
 		elif button_title == "Build Protocol":
-			frame = self.build_protocol_frame
+			frame = self.master.build_protocol_frame
 		elif button_title == 'Optimize':
 			print(button_title)
 		elif button_title == 'Service':
@@ -88,11 +90,13 @@ class MenuFrame(ctk.CTkFrame):
 		# Check if the button was clicked for the same view
 		if self.current_view == None:
 			self.current_view = frame
-			self.current_view.create_ui()
+			#self.current_view.create_ui()
+			self.current_view.place_ui()
 		elif self.current_view != frame:
 			self.destroy_current_view()
 			self.current_view = frame
-			self.current_view.create_ui()
+			#self.current_view.create_ui()
+			self.current_view.place_ui()
 
 	def destroy_current_view(self) -> None:
 		# Clean up the Right Frame for updating

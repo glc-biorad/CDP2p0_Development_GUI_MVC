@@ -5,6 +5,7 @@ import customtkinter as ctk
 import tkinter as tk
 
 # Import the BuildProtocolModel
+from models.model import Model
 from models.build_protocol_model import BuildProtocolModel
 
 # Constants
@@ -189,7 +190,8 @@ class BuildProtocolFrame(ctk.CTkFrame):
 		posy : int
 			The y position relative to the root origin
 		"""
-		self.model = BuildProtocolModel()
+		#self.model = BuildProtocolModel()
+		self.model = Model().get_build_protocol_model()
 		self.master = master
 		self.width = width
 		self.height = height
@@ -201,44 +203,54 @@ class BuildProtocolFrame(ctk.CTkFrame):
 			height=self.height,
 			corner_radius=0,
 		)
+		self.create_ui()
 
 	def create_ui(self) -> None:
 		"""Create the UI for the BuildProtocolFrame
 		"""
-		# Place the build protocol frame
-		self.place(x=self.posx, y=self.posy)
 		# Create the photoimage for the check mark
 		self.photoimage_check = ctk.CTkImage(
 			dark_image=Image.open(IMAGE_PATHS['check']),
 			size=(IMAGE_CHECK_WIDTH, IMAGE_CHECK_HEIGHT),
 		)
-		# Place the Tips Section
+		# Create the Tips Section
 		self.create_tips_ui()
-		# Place the Motion Section
+		# Create the Motion Section
 		self.create_motion_ui()
-		# Place the Pipettor Section
-		self.create_pipettor_ui()
-		# Place the Time Section
-		self.create_time_ui()
-		# Place the Other Section
-		self.create_other_ui()
-		# Place the Protocol Action Treeview
+		# Create the Pipettor Section
+		#self.create_pipettor_ui()
+		# Create the Time Section
+		#self.create_time_ui()
+		# Create the Other Section
+		#self.create_other_ui()
+		# Create the Protocol Action Treeview
 		self.create_treeview_ui()
-		# Place the Protocol Progress Bar
-		# Place the Start Button
-		# Place the Load Button
-		# Place the Save Button
-		# Place the Delete Button
+		# Create the Protocol Progress Bar
+		# Create the Start Button
+		# Create the Load Button
+		# Create the Save Button
+		# Create the Delete Button
+
+	def place_ui(self) -> None:
+		"""Place the UI for the Build Protocol Frame
+		"""
+		# Place the build protocol frame
+		self.place(x=self.posx, y=self.posy)
+		# Place the tips section
+		self.place_tips_ui()
+		# Place the motion section
+		self.place_motion_ui()
+		# Place the protocol action treeview 
+		self.place_treeview_ui()
+		
 
 	def create_tips_ui(self) -> None:
 		"""Create the UI for the Tips portion of the frame
 		"""
-		# Place the tips label
+		# Create the tips label
 		self.label_tips = ctk.CTkLabel(master=self, text='Tips', font=("Roboto Medium", -16))
-		self.label_tips.place(x=LABEL_TIPS_POSX, y=LABEL_TIPS_POSY)
-		# Place the tray label and optionmenu
+		# Create the tray label and optionmenu
 		self.label_tips_tray = ctk.CTkLabel(master=self, text='Tray', font=("Roboto Medium", -16))
-		self.label_tips_tray.place(x=LABEL_TIPS_TRAY_POSX, y=LABEL_TIPS_TRAY_POSY)
 		self.tips_tray_sv = StringVar()
 		self.tips_tray_sv.set('')
 		self.tips_tray_sv.trace('w', self.callback_tips_tray)
@@ -249,10 +261,8 @@ class BuildProtocolFrame(ctk.CTkFrame):
 			font=("Roboto Medium", -14),
 			width=OPTIONMENU_TIPS_TRAY_WIDTH
 		)
-		self.optionmenu_tips_tray.place(x=OPTIONMENU_TIPS_TRAY_POSX, y=OPTIONMENU_TIPS_TRAY_POSY)
-		# Place the column label and optionmenu
+		# Create the column label and optionmenu
 		self.label_tips_column = ctk.CTkLabel(master=self, text='Column', font=("Roboto Medium", -16))
-		self.label_tips_column.place(x=LABEL_TIPS_COLUMN_POSX, y=LABEL_TIPS_COLUMN_POSY)
 		self.tips_column_sv = StringVar()
 		self.tips_column_sv.set('')
 		self.tips_column_sv.trace('w', self.callback_tips_column)
@@ -263,10 +273,8 @@ class BuildProtocolFrame(ctk.CTkFrame):
 			font=("Roboto Medium", -14),
 			width=OPTIONMENU_TIPS_COLUMN_WIDTH
 		)
-		self.optionmenu_tips_column.place(x=OPTIONMENU_TIPS_COLUMN_POSX, y=OPTIONMENU_TIPS_COLUMN_POSY)
-		# Place the action label and optionmenu
+		# Create the action label and optionmenu
 		self.label_tips_action = ctk.CTkLabel(master=self, text='Action', font=("Roboto Medium", -16))
-		self.label_tips_action.place(x=LABEL_TIPS_ACTION_POSX, y=LABEL_TIPS_ACTION_POSY)
 		self.tips_action_sv = StringVar()
 		self.tips_action_sv.set('Eject')
 		self.optionmenu_tips_action = ctk.CTkOptionMenu(
@@ -276,29 +284,41 @@ class BuildProtocolFrame(ctk.CTkFrame):
 			font=("Roboto Medium", -14),
 			width=OPTIONMENU_TIPS_ACTION_WIDTH
 		)
-		self.optionmenu_tips_action.place(x=OPTIONMENU_TIPS_ACTION_POSX, y=OPTIONMENU_TIPS_ACTION_POSY)
-		# Place the add label and button
+		# Create the add label and button
 		self.label_tips_add = ctk.CTkLabel(master=self, text='Add', font=("Roboto Medium", -14))
-		self.label_tips_add.place(x=LABEL_TIPS_ADD_POSX, y=LABEL_TIPS_ADD_POSY)
 		self.button_tips_add = ctk.CTkButton(
 			master=self,
 			text='',
-			image=self.photoimage_check,
+			#image=self.photoimage_check,
 			fg_color=BUTTON_ADD_COLOR,
-			width=BUTTON_TIPS_ADD_WIDTH,
-			command=self.on_click_tips_add
+			width=BUTTON_TIPS_ADD_WIDTH
 		)
+
+	def place_tips_ui(self) -> None:
+		"""Place the UI for the Tips portion of the frame
+		"""
+		# Place the tips label
+		self.label_tips.place(x=LABEL_TIPS_POSX, y=LABEL_TIPS_POSY)
+		# Place the tray label and optionmenu
+		self.label_tips_tray.place(x=LABEL_TIPS_TRAY_POSX, y=LABEL_TIPS_TRAY_POSY)
+		self.optionmenu_tips_tray.place(x=OPTIONMENU_TIPS_TRAY_POSX, y=OPTIONMENU_TIPS_TRAY_POSY)
+		# Place the column label and optionmenu
+		self.label_tips_column.place(x=LABEL_TIPS_COLUMN_POSX, y=LABEL_TIPS_COLUMN_POSY)
+		self.optionmenu_tips_column.place(x=OPTIONMENU_TIPS_COLUMN_POSX, y=OPTIONMENU_TIPS_COLUMN_POSY)
+		# Place the action label and optionmenu
+		self.label_tips_action.place(x=LABEL_TIPS_ACTION_POSX, y=LABEL_TIPS_ACTION_POSY)
+		self.optionmenu_tips_action.place(x=OPTIONMENU_TIPS_ACTION_POSX, y=OPTIONMENU_TIPS_ACTION_POSY)
+		# Place the add label and button
+		self.label_tips_add.place(x=LABEL_TIPS_ADD_POSX, y=LABEL_TIPS_ADD_POSY)
 		self.button_tips_add.place(x=BUTTON_TIPS_ADD_POSX, y=BUTTON_TIPS_ADD_POSY)
 
 	def create_motion_ui(self) -> None:
 		"""Deals with creating the UI for the Motion section of the Build Protocol Frame
 		"""
-		# Place the motion label
+		# Create the motion label
 		self.label_motion = ctk.CTkLabel(master=self, text='Motion', font=("Roboto Medium", -16))
-		self.label_motion.place(x=LABEL_MOTION_POSX, y=LABEL_MOTION_POSY)
-		# Place the consumable label and optionmenu
+		# Create the consumable label and optionmenu
 		self.label_motion_consumable = ctk.CTkLabel(master=self, text='Consumable', font=("Roboto Medium", -16))
-		self.label_motion_consumable.place(x=LABEL_MOTION_CONSUMABLE_POSX, y=LABEL_MOTION_CONSUMABLE_POSY)
 		self.motion_consumable_sv = StringVar()
 		self.motion_consumable_sv.set('')
 		self.motion_consumable_sv.trace('w', self.callback_motion_consumable)
@@ -319,10 +339,8 @@ class BuildProtocolFrame(ctk.CTkFrame):
 			font=("Roboto Medium", -14),
 			width=OPTIONMENU_MOTION_CONSUMABLE_WIDTH
 		)
-		self.optionmenu_motion_comsumable.place(x=OPTIONMENU_MOTION_CONSUMABLE_POSX, y=OPTIONMENU_MOTION_CONSUMABLE_POSY)
-		# Place the tray label and optionmenu
+		# Create the tray label and optionmenu
 		self.label_motion_tray = ctk.CTkLabel(master=self, text='Tray', font=("Roboto Medium", -16))
-		self.label_motion_tray.place(x=LABEL_MOTION_TRAY_POSX, y=LABEL_MOTION_TRAY_POSY)
 		self.motion_tray_sv = StringVar()
 		self.motion_tray_sv.set('')
 		self.motion_tray_sv.trace('w', self.callback_motion_tray)
@@ -333,10 +351,8 @@ class BuildProtocolFrame(ctk.CTkFrame):
 			font=("Roboto Medium", -14),
 			width=OPTIONMENU_MOTION_TRAY_WIDTH,
 		)
-		self.optionmenu_motion_tray.place(x=OPTIONMENU_MOTION_TRAY_POSX, y=OPTIONMENU_MOTION_TRAY_POSY)
-		# Place the column label and optionmenu
+		# Create the column label and optionmenu
 		self.label_motion_column = ctk.CTkLabel(master=self, text='Column', font=("Roboto Medium", -16))
-		self.label_motion_column.place(x=LABEL_MOTION_COLUMN_POSX, y=LABEL_MOTION_COLUMN_POSY)
 		self.motion_column_sv = StringVar()
 		self.motion_column_sv.set('')
 		self.optionmenu_motion_column = ctk.CTkOptionMenu(
@@ -346,10 +362,8 @@ class BuildProtocolFrame(ctk.CTkFrame):
 			font=("Roboto Medium", -14),
 			width=OPTIONMENU_MOTION_COLUMN_WIDTH
 		)
-		self.optionmenu_motion_column.place(x=OPTIONMENU_MOTION_COLUMN_POSX, y=OPTIONMENU_MOTION_COLUMN_POSY)
-		# Place the tip label and optionmenu
+		# Create the tip label and optionmenu
 		self.label_motion_tip = ctk.CTkLabel(master=self, text="Tip (uL)", font=("Roboto Medium", -16))
-		self.label_motion_tip.place(x=LABEL_MOTION_TIP_POSX, y=LABEL_MOTION_TIP_POSY)
 		self.motion_tip_sv = StringVar()
 		self.motion_tip_sv.set('')
 		self.optionmenu_motion_tip = ctk.CTkOptionMenu(
@@ -359,18 +373,36 @@ class BuildProtocolFrame(ctk.CTkFrame):
 			font=("Roboto Medium", -14),
 			width=OPTIONMENU_MOTION_TIP_WIDTH
 		)
-		self.optionmenu_motion_tip.place(x=OPTIONMENU_MOTION_TIP_POSX, y=OPTIONMENU_MOTION_TIP_POSY)
-		# Place the add label and button
+		# Create the add label and button
 		self.label_motion_add = ctk.CTkLabel(master=self, text='Add', font=("Roboto Medium", -14))
-		self.label_motion_add.place(x=LABEL_MOTION_ADD_POSX, y=LABEL_MOTION_ADD_POSY)
 		self.button_motion_add = ctk.CTkButton(
 			master=self,
 			text='',
-			image=self.photoimage_check,
+			#image=self.photoimage_check,
 			fg_color=BUTTON_ADD_COLOR,
-			width=BUTTON_MOTION_ADD_WIDTH,
-			command=self.on_click_motion_add
+			width=BUTTON_MOTION_ADD_WIDTH
+			#command=self.on_click_motion_add
 		)
+
+	def place_motion_ui(self) -> None:
+		"""Deals with placing the UI for the Motion section of the Build Protocol Frame
+		"""
+		# Place the motion label
+		self.label_motion.place(x=LABEL_MOTION_POSX, y=LABEL_MOTION_POSY)
+		# Place the consumable label and optionmenu
+		self.label_motion_consumable.place(x=LABEL_MOTION_CONSUMABLE_POSX, y=LABEL_MOTION_CONSUMABLE_POSY)
+		self.optionmenu_motion_comsumable.place(x=OPTIONMENU_MOTION_CONSUMABLE_POSX, y=OPTIONMENU_MOTION_CONSUMABLE_POSY)
+		# Place the tray label and optionmenu
+		self.label_motion_tray.place(x=LABEL_MOTION_TRAY_POSX, y=LABEL_MOTION_TRAY_POSY)
+		self.optionmenu_motion_tray.place(x=OPTIONMENU_MOTION_TRAY_POSX, y=OPTIONMENU_MOTION_TRAY_POSY)
+		# Place the column label and optionmenu
+		self.label_motion_column.place(x=LABEL_MOTION_COLUMN_POSX, y=LABEL_MOTION_COLUMN_POSY)
+		self.optionmenu_motion_column.place(x=OPTIONMENU_MOTION_COLUMN_POSX, y=OPTIONMENU_MOTION_COLUMN_POSY)
+		# Place the tip label and optionmenu
+		self.label_motion_tip.place(x=LABEL_MOTION_TIP_POSX, y=LABEL_MOTION_TIP_POSY)
+		self.optionmenu_motion_tip.place(x=OPTIONMENU_MOTION_TIP_POSX, y=OPTIONMENU_MOTION_TIP_POSY)
+		# Place the add label and button
+		self.label_motion_add.place(x=LABEL_MOTION_ADD_POSX, y=LABEL_MOTION_ADD_POSY)
 		self.button_motion_add.place(x=BUTTON_MOTION_ADD_POSX, y=BUTTON_MOTION_ADD_POSY)
 
 	def create_pipettor_ui(self) -> None:
@@ -528,10 +560,14 @@ class BuildProtocolFrame(ctk.CTkFrame):
 		# Setup the treeview
 		self.treeview.column('Action', width=TREEVIEW_COLUMN_WIDTH, stretch=False)
 		self.treeview.heading('Action', text='Action')
+		# Add copy and paste functionality to the treeview
+
+	def place_treeview_ui(self) -> None:
+		"""Place the UI for the actions treeview
+		"""
 		# Place the treeview and scrollbar
 		self.treeview.place(x=TREEVIEW_POSX, y=TREEVIEW_POSY, width=TREEVIEW_WIDTH, height=TREEVIEW_HEIGHT)
 		self.scrollbar.place(x=SCROLLBAR_POSX, y=SCROLLBAR_POSY, width=SCROLLBAR_WIDTH)
-		# Add copy and paste functionality to the treeview
 
 	def callback_tips_tray(self, *args) -> None:
 		"""Deals with what happens if the Tips Tray changes
@@ -633,33 +669,17 @@ class BuildProtocolFrame(ctk.CTkFrame):
 		column = self.motion_column_sv.get()
 		tip = self.motion_tip_sv.get()
 
-	def on_click_tips_add(self) -> None:
-		"""On click event for adding a tips action
-		"""
-		# Get the action data
-		tray = self.tips_tray_sv.get()
-		column = self.tips_column_sv.get()
-		action = self.tips_action_sv.get()
-		# Make sure there is an action
-		if action == '':
-			print(f"Tip action must be specified")
-			return None
-		# Check the action treeview to make sure you are allowed to add this action
-		# Generate the action message
-		action_message = ''
-		if tray == '':
-			action_message = f"{action} tips"
-		else:
-			if action == 'Eject':
-				action_message = f"{action} tips in {tray} column {column}"
-			elif action == 'Pickup':
-				action_message = f"{action} tips from {tray} column {column}"
-			else:
-				action_message = f"{action} tips on the {tray}"
-		print(action_message)
-		print("NEED TO GET THE CONTOLLER TO UPDATE THE MODEL!!!")
-		# Add the action to the action treeview
-		self.update_treeview()
+	def bind_button_tips_add(self, c):
+		try:
+			self.button_tips_add.bind('<Button-1>', c)
+		except:
+			pass
+
+	def bind_button_motion_add(self, callback: Callable[[tk.Event], None]) -> None:
+		try:
+			self.button_motion_add.bind('<Button-1>', callback)
+		except:
+			pass
 
 	def on_click_motion_add(self) -> None:
 		"""On click event for adding a motion action
@@ -752,9 +772,8 @@ class BuildProtocolFrame(ctk.CTkFrame):
 		for i in self.treeview.get_children():
 			self.treeview.delete(i)
 		# Add the actions back to the treeview
-		n_actions = len(self.model.actions)	
+		n_actions = len(self.model.select())
 		for i in range(n_actions):
-			action = self.model.actions[i]
-			print(action)
+			action = self.model.actions[i][0]
 			self.treeview.insert('', 'end', iid=i, values=(action,))
 		self.model.actions

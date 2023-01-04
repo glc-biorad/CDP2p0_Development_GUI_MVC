@@ -8,6 +8,7 @@ def main() -> None:
 	model = Model()
 	view = View(model)
 	controller = Controller(model, view)
+	controller.setup_bindings()
 	controller.run()
 
 if __name__ == '__main__':

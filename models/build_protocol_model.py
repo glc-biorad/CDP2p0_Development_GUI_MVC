@@ -1,4 +1,8 @@
+import sqlite3
+
 from tkinter import StringVar
+
+TABLE_NAME = 'build_protocol'
 
 # Constants
 DEFAULTS = {
@@ -21,7 +25,13 @@ DEFAULTS = {
 class BuildProtocolModel:
 	""" Model for the Build Protocol View
 	"""
-	def __init__(self) -> None:
+	def __init__(self, db_name, cursor, connection) -> None:
+		# Setup database connection
+		self.db_name = db_name
+		self.cursor = cursor
+		self.connection = connection
+		self.drop_table()
+		self.create_table()
 		# Initialize the optionmenu and entry variables
 		self.tips_tray_sv = StringVar()
 		self.tips_column_sv = StringVar()
@@ -39,6 +49,21 @@ class BuildProtocolModel:
 		self.other_option_sv = StringVar()
 		# Initialize the action list
 		self.actions = []
+
+	def create_table(self):
+		query = f"""CREATE TABLE IF NOT EXISTS {TABLE_NAME}(
+		ID INT NOT NULL,
+		ACTION TEXT NOT NULL
+		);
+		"""
+		self.cursor.execute(query)
+	
+	def drop_table(self) -> None:
+		"""Drops the table out of the database
+		"""
+		query = f"""DROP TABLE {TABLE_NAME}
+		"""
+		self.cursor.execute(query)
 
 	def setup_defaults(self) -> None:
 		"""Setup the default option and entry values for the Build Protocol Frame view
@@ -68,6 +93,10 @@ class BuildProtocolModel:
 			Key value for looking up actions in the action list
 		"""
 		if ID == None:
+			query = f"""SELECT ACTION FROM {TABLE_NAME}
+			"""
+			self.cursor.execute(query)
+			self.actions = self.cursor.fetchall()
 			return self.actions
 		return [self.actions[ID]]
 
@@ -82,6 +111,18 @@ class BuildProtocolModel:
 			The action message to be added to the action treeview
 		"""
 		self.actions = self.actions[:ID] + [action_message] + self.actions[ID:]
+		query = f"""INSERT INTO {TABLE_NAME}
+		(
+		ID,
+		ACTION
+		)
+		VALUES (
+		{ID},
+		'{action_message}'
+		);
+		"""
+		self.cursor.execute(query)
+		self.connection.commit()
 
 	def delete(self, ID: int) -> None:
 		"""Query for deleting an action from the action list by id
